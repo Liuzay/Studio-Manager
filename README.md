@@ -13,3 +13,12 @@ An offline-first PWA for artists and creators. It includes assisted social posti
 - Use the Backup tab to export a JSON backup regularly.
 - Social posting is assisted: the app prepares copy and opens the platform, but does not access your social accounts.
 - Analytics and financial records are entered manually.
+
+## Photo post generator
+Upload an artwork or photo, add a short description and project/fandom, choose a post style and tone, and generate editable captions, hashtags, and platform-specific versions. Images are compressed and stored locally in the browser with the post. The offline version does not automatically recognize image contents, so the short description guides generation.
+
+## New cozy update
+- Warmer, colorful scrapbook-inspired design
+- Four selectable color themes
+- Inspiration Board with image uploads, notes, and tags
+- Idea Mixer that combines saved inspiration into drawing and posting prompts
