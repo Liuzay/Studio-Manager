@@ -1,24 +1,15 @@
-# Studio Manager
+# Studio Manager v2.2 — Powered by Ignacio
 
-An offline-first PWA for artists and creators. It includes assisted social posting, reusable platform copy, goals, analytics, a content calendar, commissions, printable invoices, income/expense tracking, convention planning, an art/character vault, hashtag sets, and an idea generator.
+A cozy, offline-friendly creative operating system for artists.
 
-## Publish with GitHub Pages
-1. Upload every file in this folder to the root of a GitHub repository.
-2. Open Settings → Pages.
-3. Choose Deploy from a branch, `main`, `/root`.
-4. Open the published GitHub Pages URL in Safari and choose Share → Add to Home Screen.
+## New in v2.2
+- Interactive Studio Room with clickable workflow objects
+- Custom room moods and studio pets
+- Creative Timeline with manual and automatic milestones
+- First-run onboarding
+- Mobile quick-access dock
+- Improved PWA and iPhone home-screen guidance
+- Existing v2.1 data remains compatible
 
-## Important
-- Data is stored locally in the browser on the device.
-- Use the Backup tab to export a JSON backup regularly.
-- Social posting is assisted: the app prepares copy and opens the platform, but does not access your social accounts.
-- Analytics and financial records are entered manually.
-
-## Photo post generator
-Upload an artwork or photo, add a short description and project/fandom, choose a post style and tone, and generate editable captions, hashtags, and platform-specific versions. Images are compressed and stored locally in the browser with the post. The offline version does not automatically recognize image contents, so the short description guides generation.
-
-## New cozy update
-- Warmer, colorful scrapbook-inspired design
-- Four selectable color themes
-- Inspiration Board with image uploads, notes, and tags
-- Idea Mixer that combines saved inspiration into drawing and posting prompts
+## Install as an iPhone home-screen app for free
+Host the folder on GitHub Pages, Netlify, Cloudflare Pages, or Vercel. Open the hosted address in Safari, tap Share, then Add to Home Screen.
