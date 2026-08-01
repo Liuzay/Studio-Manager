@@ -1,11 +1,11 @@
 {
-  "name": "Studio Manager \u2014 Powered by Ignacio",
+  "name": "Studio Manager \u2014 Powered by Ignatz",
   "short_name": "Studio Manager",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#f7f4ff",
-  "theme_color": "#7c5cff",
-  "description": "A cozy creative operating system for artists, powered by Ignacio.",
+  "background_color": "#fff7f1",
+  "theme_color": "#b85c8a",
+  "description": "A cozy creative operating system for artists, powered by Ignatz.",
   "icons": [
     {
       "src": "icon-192.png",

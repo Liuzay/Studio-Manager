@@ -1,15 +1,18 @@
-# Studio Manager v2.2 — Powered by Ignacio
+# Studio Manager 2.3 — Powered by Ignatz
 
-A cozy, offline-friendly creative operating system for artists.
+A cozy, offline-capable creative operating system for artists.
 
-## New in v2.2
-- Interactive Studio Room with clickable workflow objects
-- Custom room moods and studio pets
-- Creative Timeline with manual and automatic milestones
-- First-run onboarding
-- Mobile quick-access dock
-- Improved PWA and iPhone home-screen guidance
-- Existing v2.1 data remains compatible
+## Highlights
+- Original animated Ignatz avatar and contextual moods
+- Living interactive studio room
+- Unified design system and reusable UI helpers
+- Native-style mobile PWA behavior
+- Character Vault, Inspiration Garden, Growth Lab, Artist Row, timeline, and backups
 
-## Install as an iPhone home-screen app for free
-Host the folder on GitHub Pages, Netlify, Cloudflare Pages, or Vercel. Open the hosted address in Safari, tap Share, then Add to Home Screen.
+## Run locally
+Open `index.html` for basic testing. For full PWA/offline behavior, serve the folder through GitHub Pages, Netlify, Vercel, Cloudflare Pages, or a local web server.
+
+## Upgrade
+Export your existing app backup before replacing hosted files. Existing v2.2 browser data remains compatible.
+
+See `CHANGELOG.md`, `RELEASE_NOTES.md`, and `DESIGN_SYSTEM.md`.
