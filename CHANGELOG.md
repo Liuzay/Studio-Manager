@@ -80,3 +80,10 @@
 - Added a complete Twitch Streaming Studio tab.
 - Added stream run-of-show generation, title ideas, chat prompts, clip targets, and overlay guidance.
 - Added pre-stream checklist, stream scheduling, session analytics, and post-stream clip packages.
+
+
+## 3.0.1 Twitch reliability hotfix
+- Moved Twitch controls into an isolated self-contained module.
+- Rebound every Twitch button with fresh event listeners.
+- Added visible module status and local Twitch-specific persistence.
+- Fixed plan generation, checklist, schedule, clip package, overlay accent, and session logging controls.

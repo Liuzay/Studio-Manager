@@ -160,7 +160,11 @@ body.night header,body.night .tabs{background:color-mix(in srgb,var(--surface) 9
 body.night .stream-kpi-strip>div{background:var(--surface-raised)}
 @media(max-width:760px){header{position:relative}.tabs{top:0}.twitch-dashboard-hero{align-items:flex-start;flex-direction:column;padding:21px}.hero-actions{width:100%}.hero-actions .btn{flex:1}.stream-kpi-strip{grid-template-columns:1fr}.card:hover{transform:none}}
 
-</style></head>
+</style>
+<style id="twitch-reliability-style">
+.twitch-module-status{margin:0 0 14px;padding:10px 14px;border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);border-radius:14px;background:color-mix(in srgb,var(--accent2) 38%,var(--surface));color:var(--text);font-size:.88rem;font-weight:750}.twitch-module-status[data-kind="error"]{border-color:#c94b5f;background:color-mix(in srgb,#c94b5f 12%,var(--surface))}.stream-tag.selected{outline:3px solid color-mix(in srgb,var(--accent) 35%,transparent);background:var(--accent);color:#fff}
+</style>
+</head>
 <body><div class="app">
 <header><div class="brand"><h1>🎨 Studio Manager <span class="release-badge">v3.0</span></h1><p>Your art, content, clients, and growth—in one cozy place.</p></div><div class="top-controls"><button class="icon-pill" id="nightToggle">🌙 Night</button><button class="pill" id="installBtn" hidden>Install app</button></div></header>
 <nav class="tabs" aria-label="Sections">
@@ -467,7 +471,7 @@ let deferred;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault(
 
 
 // v2.3 design-system helpers, Ignatz interactions, and living-room ambience
-const APP_RELEASE={version:'3.0.0',name:'UI Refresh + Reliable Twitch Studio',released:'2026-08-02'};
+const APP_RELEASE={version:'3.0.1',name:'Twitch Reliability Hotfix',released:'2026-08-02'};
 window.StudioUI={
  card:(title,body,extra='')=>`<article class="component-card ${extra}"><h3>${esc(title)}</h3>${body}</article>`,
  badge:(text)=>`<span class="badge">${esc(text)}</span>`,
@@ -600,4 +604,135 @@ const themeAudit=document.createElement('div');themeAudit.className='theme-audit
 renderStreaming();
 window.addEventListener('error',event=>{console.error(event.error||event.message);const active=document.querySelector('.view.active');if(active&&active.id==='streaming'&&!document.querySelector('.runtime-warning')){const warning=document.createElement('div');warning.className='runtime-warning notice';warning.innerHTML='<b>A tool hit an unexpected error.</b> Refresh once and try again. Your saved studio data remains on this device.';active.prepend(warning)}});
 
-</script></body></html>
+</script>
+<script id="twitch-reliability-module">
+(() => {
+  'use strict';
+  const byId = id => document.getElementById(id);
+  const escapeHtml = value => String(value ?? '').replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+  const STORAGE_KEY = 'studioManagerTwitchV301';
+  const checklist = [
+    'Update title, category, tags, and go-live notification',
+    'Test microphone level and remove background noise',
+    'Confirm game or art capture and camera framing',
+    'Open chat and moderation controls',
+    'Prepare water and a short break screen',
+    'Write one opening question for chat',
+    'Mark 2–3 moments you want to turn into clips'
+  ];
+  const load = () => {
+    try { return {...{plans:[],sessions:[],checks:[]}, ...JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}')}; }
+    catch { return {plans:[],sessions:[],checks:[]}; }
+  };
+  let data = load();
+  const save = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  const setStatus = (message, kind='ok') => {
+    const el = byId('twitchModuleStatus');
+    if (!el) return;
+    el.textContent = message;
+    el.dataset.kind = kind;
+  };
+  const bind = (id, event, handler) => {
+    const old = byId(id);
+    if (!old) return false;
+    const fresh = old.cloneNode(true);
+    old.replaceWith(fresh);
+    fresh.addEventListener(event, handler);
+    return true;
+  };
+  const renderChecklist = () => {
+    const host = byId('streamChecklist');
+    if (!host) return;
+    host.innerHTML = checklist.map((item,index)=>`<label class="stream-check"><input type="checkbox" data-v301-check="${index}" ${data.checks.includes(index)?'checked':''}><span>${escapeHtml(item)}</span></label>`).join('');
+    host.querySelectorAll('[data-v301-check]').forEach(box => box.addEventListener('change', () => {
+      const index = Number(box.dataset.v301Check);
+      data.checks = box.checked ? [...new Set([...data.checks,index])] : data.checks.filter(value => value !== index);
+      save();
+      setStatus('Checklist progress saved.');
+    }));
+  };
+  const renderPlans = () => {
+    const host = byId('savedStreams');
+    if (!host) return;
+    host.innerHTML = data.plans.length ? data.plans.map(plan => `<div class="item stream-plan-card"><div class="item-head"><div><strong>${escapeHtml(plan.title)}</strong><div class="small muted">${escapeHtml(plan.date || 'Unscheduled')} ${escapeHtml(plan.time || '')} • ${escapeHtml(plan.game || 'Variety')}</div></div><button class="btn danger" type="button" data-v301-delete-plan="${plan.id}">×</button></div></div>`).join('') : '<div class="empty">No upcoming streams saved.</div>';
+    host.querySelectorAll('[data-v301-delete-plan]').forEach(button => button.addEventListener('click', () => {
+      data.plans = data.plans.filter(plan => String(plan.id) !== button.dataset.v301DeletePlan);
+      save(); renderPlans(); setStatus('Stream removed.');
+    }));
+  };
+  const renderStats = () => {
+    const stats = byId('streamStats');
+    const coach = byId('streamCoach');
+    if (!stats || !coach) return;
+    if (!data.sessions.length) { stats.innerHTML=''; return; }
+    const avg = key => Math.round(data.sessions.reduce((sum,item)=>sum+(Number(item[key])||0),0)/data.sessions.length);
+    stats.innerHTML = `<div class="stream-stat"><span class="small muted">Sessions</span><strong>${data.sessions.length}</strong></div><div class="stream-stat"><span class="small muted">Avg viewers</span><strong>${avg('avgViewers')}</strong></div><div class="stream-stat"><span class="small muted">Avg chatters</span><strong>${avg('chatters')}</strong></div><div class="stream-stat"><span class="small muted">Followers/session</span><strong>${avg('followers')}</strong></div>`;
+    coach.textContent = avg('chatters') >= Math.max(2, avg('avgViewers')*.25) ? 'Your chat participation is healthy. Keep direct questions and recurring segments.' : 'Prioritize interaction over longer hours: greet arrivals, ask easy one-answer questions, and repeat a viewer-choice segment.';
+  };
+  const generatePlan = sourceButton => {
+    const output = byId('streamPlanOutput');
+    if (!output) return;
+    const game = byId('streamGame')?.value.trim() || 'creative variety stream';
+    const goal = byId('streamGoal')?.value || 'Build a returning community';
+    const mins = Number(byId('streamLength')?.value) || 90;
+    const energy = byId('streamEnergy')?.value || 'Cozy and conversational';
+    const angle = byId('streamAngle')?.value.trim() || 'a clear challenge with regular chat choices';
+    const original = sourceButton?.textContent;
+    if (sourceButton) { sourceButton.disabled=true; sourceButton.textContent='Building…'; }
+    const core = Math.max(30, mins-16);
+    const titleOptions = [`${game}: ${angle}`, `${energy.split(' ')[0]} ${game} — chat chooses what happens`, `${game}, but every mistake changes the challenge`];
+    const segments = [
+      ['0–8 min','Welcome early viewers, explain the goal, and ask one easy opening question.'],
+      [`8–${8+Math.round(core*.4)} min`,`Main ${game} segment. Restate the challenge for new arrivals and mark one clip-worthy moment.`],
+      [`${8+Math.round(core*.4)}–${8+Math.round(core*.75)} min`,'Change the pace with a viewer choice, mini-challenge, Q&A, or behind-the-scenes explanation.'],
+      [`${8+Math.round(core*.75)}–${mins-8} min`,'Final push with a clear win condition and a natural mention of the next stream.'],
+      [`${mins-8}–${mins} min`,'Recap the best moment, thank specific chat participation, and prepare a compatible raid.']
+    ];
+    output.innerHTML = `<div class="promo-section stream-plan-card"><h3>Title options</h3>${titleOptions.map((title,index)=>`<button class="stream-tag v301-title-choice ${index===0?'selected':''}" type="button">${escapeHtml(title)}</button>`).join('')}<button class="btn ghost" id="v301CopyPlan" type="button">Copy full plan</button></div><div class="promo-section"><h3>Run of show</h3><div class="stream-segments">${segments.map(segment=>`<div class="stream-segment"><b>${segment[0]}</b><span>${escapeHtml(segment[1])}</span></div>`).join('')}</div></div><div class="promo-section"><h3>Conversation prompts</h3><div class="stream-check">💬 <span>What are you working on or playing lately?</span></div><div class="stream-check">💬 <span>Should I choose the safe option or the chaotic option?</span></div><div class="stream-check">💬 <span>What moment from today deserves a clip?</span></div></div><div class="promo-section"><h3>Clip targets</h3><div class="stream-check">✂️ <span>First clear payoff or reveal</span></div><div class="stream-check">✂️ <span>Biggest mistake or funniest reaction</span></div><div class="stream-check">✂️ <span>One useful explanation under 45 seconds</span></div></div><div class="notice"><b>Ignatz’s focus:</b> ${escapeHtml(goal)}. Ask a clear question, pause long enough for answers, then respond to people by name.</div>`;
+    const choose = title => {
+      if (byId('streamSavedTitle')) byId('streamSavedTitle').value=title;
+      if (byId('overlayTitle')) byId('overlayTitle').textContent=title;
+    };
+    choose(titleOptions[0]);
+    output.querySelectorAll('.v301-title-choice').forEach(button => button.addEventListener('click', () => {
+      output.querySelectorAll('.v301-title-choice').forEach(item => item.classList.toggle('selected', item===button));
+      choose(button.textContent);
+    }));
+    byId('v301CopyPlan')?.addEventListener('click', async event => {
+      try { await navigator.clipboard.writeText(output.innerText); event.currentTarget.textContent='Copied!'; }
+      catch { alert('Copy is blocked in this browser. Select the plan and copy it manually.'); }
+    });
+    output.scrollIntoView({behavior:'smooth',block:'nearest'});
+    setStatus('Stream plan generated successfully.');
+    setTimeout(()=>{ if(sourceButton){sourceButton.disabled=false;sourceButton.textContent=original;} },300);
+  };
+  const buildClipPackage = () => {
+    const moment = byId('streamMoment')?.value.trim();
+    if (!moment) { alert('Describe the moment or add a timestamp first.'); return; }
+    const type = byId('streamMomentType')?.value || 'Funny fail or reaction';
+    const platform = byId('streamClipPlatform')?.value || 'TikTok';
+    const hooks = {'Funny fail or reaction':'I knew this was going badly before it happened…','Impressive play':'This is the cleanest moment from the entire stream.','Helpful tip':'This one change made the next attempt much easier.','Chat interaction':'Chat made the decision—and immediately regretted it.','Story or opinion':'I did not expect this conversation during stream.','Art reveal':'We finished this live, and the final detail changed everything.'};
+    byId('streamClipOutput').innerHTML=`<div class="promo-section"><h3>Hook</h3><p><b>${escapeHtml(hooks[type] || hooks['Funny fail or reaction'])}</b></p></div><div class="promo-section"><h3>Cut plan</h3><div class="stream-segment"><b>0–1s</b><span>Open on the reaction, result, or strongest frame.</span></div><div class="stream-segment"><b>1–4s</b><span>Give only the context needed to understand the moment.</span></div><div class="stream-segment"><b>4–12s</b><span>${escapeHtml(moment)}</span></div><div class="stream-segment"><b>Final 2s</b><span>End immediately after the payoff.</span></div></div><div class="promo-section"><h3>Caption for ${escapeHtml(platform)}</h3><p>${escapeHtml(type)} from stream. Live moments are always less predictable than planned content. What would you have done here?</p></div>`;
+    setStatus('Clip package created.');
+  };
+  const init = () => {
+    if (!byId('streaming')) return;
+    const hero = document.querySelector('#streaming .twitch-dashboard-hero');
+    if (hero && !byId('twitchModuleStatus')) hero.insertAdjacentHTML('afterend','<div class="twitch-module-status" id="twitchModuleStatus" data-kind="ok">Twitch tools ready.</div>');
+    bind('buildStreamPlan','click',event=>generatePlan(event.currentTarget));
+    bind('streamQuickPlan','click',event=>{ if(byId('streamGame') && !byId('streamGame').value) byId('streamGame').value='art and community hangout'; generatePlan(event.currentTarget); });
+    bind('streamHeroGenerate','click',event=>{ document.querySelector('[data-view="streaming"]')?.click(); generatePlan(event.currentTarget); });
+    bind('streamHeroChecklist','click',()=>byId('streamChecklist')?.scrollIntoView({behavior:'smooth',block:'center'}));
+    bind('resetStreamChecklist','click',()=>{data.checks=[];save();renderChecklist();setStatus('Checklist reset.');});
+    bind('saveStreamPlan','click',()=>{const title=byId('streamSavedTitle')?.value.trim();if(!title){alert('Add a working stream title first.');return;}data.plans.unshift({id:Date.now(),title,date:byId('streamDate')?.value||'',time:byId('streamTime')?.value||'',game:byId('streamGame')?.value.trim()||'Variety'});save();renderPlans();setStatus('Stream added to your schedule.');});
+    bind('buildStreamClips','click',buildClipPackage);
+    bind('logStreamSession','click',()=>{data.sessions.unshift({id:Date.now(),avgViewers:Number(byId('streamAvgViewers')?.value)||0,peakViewers:Number(byId('streamPeakViewers')?.value)||0,followers:Number(byId('streamFollowers')?.value)||0,chatters:Number(byId('streamChatters')?.value)||0});save();renderStats();setStatus('Session results saved.');});
+    bind('overlayAccent','change',event=>{const preview=document.querySelector('.stream-overlay-preview');const cam=document.querySelector('.cam-box');if(preview)preview.style.borderColor=event.target.value;if(cam)cam.style.borderColor=event.target.value;setStatus('Overlay accent updated.');});
+    renderChecklist(); renderPlans(); renderStats(); setStatus('Twitch tools ready.');
+    window.__twitchV301Ready = true;
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, {once:true}); else init();
+})();
+</script>
+
+</body></html>

@@ -20,3 +20,10 @@ See `CHANGELOG.md`, `RELEASE_NOTES.md`, and `DESIGN_SYSTEM.md`.
 
 ## Twitch Streaming Studio
 Use the Twitch tab to plan streams, save schedules, complete a pre-stream checklist, review overlay guidance, track session performance, and turn memorable moments into TikTok, Reel, or YouTube Short packages.
+
+
+## 3.0.1 Twitch reliability hotfix
+- Moved Twitch controls into an isolated self-contained module.
+- Rebound every Twitch button with fresh event listeners.
+- Added visible module status and local Twitch-specific persistence.
+- Fixed plan generation, checklist, schedule, clip package, overlay accent, and session logging controls.
