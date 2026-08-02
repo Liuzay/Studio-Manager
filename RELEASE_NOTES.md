@@ -1,12 +1,7 @@
-# Studio Manager 2.3.0
+# Studio Manager 2.7.0 — Organic Growth Lab + Auto Editor
 
-**Release:** Design System & Ignatz  
-**Date:** August 1, 2026
-
-This release establishes a consistent visual foundation, gives Ignatz an original animated identity, makes the Studio Room feel alive, and improves mobile use as an installed iPhone PWA.
-
-## Upgrade safely
-1. Export a backup from the previous version.
-2. Replace the hosted files with this release.
-3. Reload once while online so the service worker updates.
-4. Confirm your projects and settings, then export a fresh v2.3 backup.
+- Replaced paid TikTok promotion planning with a zero-cost organic Growth Lab.
+- Added post scoring, hooks, captions, CTAs, timelines, and improvement notes.
+- Added Creator DNA analysis, an experiment board, content reuse bank, and natural comment reply ideas.
+- Added Ignatz Auto Editor for multiple images/videos, automatic 9:16 timing, text overlays, preview, clip-duration adjustment, removal, and local export.
+- Video rendering stays on the device. Export format depends on browser support (MP4 when available, otherwise WebM).

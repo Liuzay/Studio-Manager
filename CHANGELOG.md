@@ -1,3 +1,12 @@
+# Studio Manager 2.6.0 — Promotion Assistant
+
+- Added a focused promotion campaign builder inside Ignatz.
+- Generates hooks, captions, calls to action, creative checklists, and campaign success rules.
+- Adds small-budget and daily-spend planning before a campaign is launched.
+- Tracks paid views, followers, conversions, revenue, cost per follower, cost per thousand views, and return on ad spend.
+- Warns against promoting posts without organic validation and against judging campaigns by raw views alone.
+- Keeps promotion decisions and real account activity under the creator’s control.
+
 # Changelog
 
 ## 2.4.0 — Grouped Navigation & Storage Insight (2026-08-02)
@@ -39,3 +48,15 @@
 
 ### Compatibility
 - Existing local data and v2.2 backups remain supported. Internal legacy keys are retained intentionally.
+
+## 2.5.0 — Ignatz Growth & Income Suite
+- Fixed Ignatz text contrast in light and night mode.
+- Added energy-based daily growth routines.
+- Added monthly income and offer target calculator.
+- Added income-focused smart action based on products and commissions.
+- Added safe automation guidance and improved action accessibility.
+
+## 2.7.0 — 2026-08-02
+- Replaced paid promotion tools with organic growth planning.
+- Added Viral Score, Money Score, hook generation, Creator DNA, experiments, content bank, and reply assistant.
+- Added local Ignatz Auto Editor and vertical video export.
