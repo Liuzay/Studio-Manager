@@ -16,3 +16,7 @@ Open `index.html` for basic testing. For full PWA/offline behavior, serve the fo
 Export your existing app backup before replacing hosted files. Existing v2.2 browser data remains compatible.
 
 See `CHANGELOG.md`, `RELEASE_NOTES.md`, and `DESIGN_SYSTEM.md`.
+
+
+## Twitch Streaming Studio
+Use the Twitch tab to plan streams, save schedules, complete a pre-stream checklist, review overlay guidance, track session performance, and turn memorable moments into TikTok, Reel, or YouTube Short packages.

@@ -63,3 +63,11 @@
 
 ## 2.8.0 — 2026-08-02
 - Added Auto Editor Pro controls, safe zones, trim/reorder tools, posting-pack export, render progress, and seven-day organic sprint planning.
+
+
+## 2.9.0
+- Rebuilt day/night contrast using shared surface and text variables.
+- Fixed invisible text in cards, generated results, forms, badges, calendars, dialogs, and editor controls.
+- Added a complete Twitch Streaming Studio tab.
+- Added stream run-of-show generation, title ideas, chat prompts, clip targets, and overlay guidance.
+- Added pre-stream checklist, stream scheduling, session analytics, and post-stream clip packages.
