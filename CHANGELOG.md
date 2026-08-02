@@ -60,3 +60,6 @@
 - Replaced paid promotion tools with organic growth planning.
 - Added Viral Score, Money Score, hook generation, Creator DNA, experiments, content bank, and reply assistant.
 - Added local Ignatz Auto Editor and vertical video export.
+
+## 2.8.0 — 2026-08-02
+- Added Auto Editor Pro controls, safe zones, trim/reorder tools, posting-pack export, render progress, and seven-day organic sprint planning.
