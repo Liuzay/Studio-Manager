@@ -1,3 +1,3 @@
-# Studio Manager 2.9.0 — Theme Repair + Twitch Streaming Studio
+# Studio Manager 3.0.0 — UI Refresh + Reliable Twitch Studio
 
-This release repairs inconsistent light/dark theme contrast across the entire app and adds a dedicated Twitch workflow. Ignatz can now plan a stream, create a timed run-of-show, suggest titles and conversation prompts, define clip-worthy moments, guide overlay layout, track preparation, schedule streams, log results, and turn stream moments into short-form content packages.
+This release repairs the Twitch generation workflow and improves the app-wide interface. The generator now initializes after the Twitch module is available, provides visible progress, supports selectable generated titles, and lets you copy the full plan. A guarded renderer prevents one unfinished module from disabling the rest of Studio Manager.

@@ -1,3 +1,12 @@
+# Changelog
+
+## 3.0.0
+- Fixed startup-order bug that prevented Twitch controls from receiving event handlers.
+- Added guarded rendering so optional modules cannot stop the entire app.
+- Added reliable Twitch generator feedback, error recovery, title selection, and plan copying.
+- Refreshed sticky navigation, cards, hero sections, mobile layouts, and visual hierarchy.
+- Added Twitch workflow summary and quick actions.
+
 # Studio Manager 2.6.0 — Promotion Assistant
 
 - Added a focused promotion campaign builder inside Ignatz.
